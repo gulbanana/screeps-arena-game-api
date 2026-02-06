@@ -3,6 +3,7 @@ use crate::{
     game::pathfinder::Position,
     objects::{Creep, GameObject, OwnedStructure, Store, Structure},
     prelude::*,
+    Direction,
 };
 use js_sys::{Array, Object};
 use wasm_bindgen::prelude::*;
@@ -37,6 +38,12 @@ extern "C" {
     /// [Screeps documentation](https://docs.screeps.com/api/#StructureSpawn.spawnCreep)
     #[wasm_bindgen(method, js_name = spawnCreep)]
     fn spawn_creep_internal(this: &StructureSpawn, body: &Array) -> SpawnCreepResult;
+
+    /// Set desired directions where creeps should move when spawned.
+    ///
+    /// [Screeps documentation](https://arena.screeps.com/docs#StructureSpawn.setDirections)
+    #[wasm_bindgen(method, js_name = setDirections)]
+    fn set_directions_internal(this: &StructureSpawn, body: &Array) -> ReturnCode;
 }
 
 impl StructureSpawn {
@@ -48,6 +55,11 @@ impl StructureSpawn {
             Some(c) => Ok(c),
             None => Err(r.error()),
         }
+    }
+
+    pub fn set_directions(&self, directions: &[Direction]) -> ReturnCode {
+        let directions = directions.iter().cloned().map(JsValue::from).collect();
+        Self::set_directions_internal(self, &directions)
     }
 }
 #[wasm_bindgen]
