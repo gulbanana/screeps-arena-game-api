@@ -50,6 +50,7 @@ enable-body-part = []
 enable-flag = []
 enable-area-effect = []
 enable-score = []
+enable-bonus-flag = []
 
 arena-capture-the-flag = ["enable-body-part", "enable-flag"]
 arena-spawn-and-swamp = []
